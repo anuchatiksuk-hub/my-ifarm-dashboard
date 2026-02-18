@@ -79,67 +79,6 @@
         .btn-ring svg { width:26px; height:26px; fill:rgba(168,197,160,0.85); }
         .btn-text { font-size:0.82rem; letter-spacing:4px; text-transform:uppercase; color:rgba(168,197,160,0.55); }
 
-        /* ===== MUSIC HINT (แสดงหลังเปิดซอง บอกให้กดปุ่มเพลง) ===== */
-        #music-hint {
-            display: none;
-            position: fixed;
-            bottom: 90px; right: 14px;
-            z-index: 9998;
-            background: rgba(30,20,12,0.92);
-            color: #f5e8d0;
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 0.85rem;
-            padding: 10px 16px 10px 14px;
-            border-radius: 24px;
-            border: 1px solid rgba(176,141,87,0.35);
-            backdrop-filter: blur(8px);
-            white-space: nowrap;
-            animation: hintBounce 2s ease-in-out 3;
-            pointer-events: none;
-        }
-        @keyframes hintBounce {
-            0%,100%{transform:translateY(0);opacity:1;}
-            50%{transform:translateY(-6px);opacity:0.85;}
-        }
-        #music-hint::after {
-            content:'';
-            position:absolute; right:10px; bottom:-8px;
-            border:8px solid transparent;
-            border-top-color:rgba(30,20,12,0.92);
-        }
-
-        /* ===== MUSIC TOGGLE BTN (อยู่บน GitHub Pages ไม่ใช่ GAS) ===== */
-        #music-btn {
-            display: none;
-            position: fixed;
-            bottom: 82px; right: 18px;
-            z-index: 9997;
-            width: 48px; height: 48px;
-            border-radius: 50%; border: none;
-            cursor: pointer;
-            align-items: center; justify-content: center;
-            background: linear-gradient(135deg, #b08d57 0%, #d4af7a 100%);
-            box-shadow: 0 4px 18px rgba(176,141,87,0.5);
-            transition: all 0.3s cubic-bezier(0.34,1.4,0.64,1);
-            -webkit-tap-highlight-color: transparent;
-            outline: none;
-            font-size: 22px;
-        }
-        #music-btn:hover  { transform:scale(1.12); box-shadow:0 8px 28px rgba(176,141,87,0.6); }
-        #music-btn:active { transform:scale(0.92); }
-        #music-btn.playing::before {
-            content:''; position:absolute; inset:-6px; border-radius:50%;
-            border:2px solid rgba(176,141,87,0.5); animation:musicRipple 2s ease-out infinite;
-        }
-        #music-btn.playing::after {
-            content:''; position:absolute; inset:-14px; border-radius:50%;
-            border:1.5px solid rgba(176,141,87,0.25); animation:musicRipple 2s ease-out infinite; animation-delay:0.6s;
-        }
-        @keyframes musicRipple { 0%{transform:scale(1);opacity:0.8;} 100%{transform:scale(1.5);opacity:0;} }
-        #music-btn .icon { transition:all 0.3s ease; }
-        #music-btn.playing .icon { animation:noteWiggle 1.8s ease-in-out infinite; }
-        @keyframes noteWiggle { 0%,100%{transform:rotate(-8deg);} 50%{transform:rotate(8deg) scale(1.1);} }
-
         /* ===== SPLASH FADE OUT ===== */
         #splash.fade-out { animation:splashFade 0.8s cubic-bezier(0.4,0,0.2,1) forwards; }
         @keyframes splashFade { 0%{opacity:1;transform:scale(1);} 100%{opacity:0;transform:scale(1.06);pointer-events:none;} }
@@ -192,22 +131,14 @@
         </div>
     </div>
 
-    <!-- Music hint tooltip -->
-    <div id="music-hint">🎵 กดปุ่มนี้เพื่อเปิดเพลง</div>
-
-    <!-- Music toggle button (อยู่บน GitHub Pages — ไม่ถูก iframe block) -->
-    <button id="music-btn" onclick="toggleMusic()">
-        <span class="icon" id="music-icon">🎵</span>
-    </button>
-
     <script>
     /* ============================================================
        CONFIG — แก้ตรงนี้
     ============================================================ */
     var GAS_URL      = 'https://script.google.com/macros/s/AKfycbx92GzU1TgolUBrlJLSM46sLVbT0pEHJ0kgT8ztas-HSkAVngfCr8wsbCh0IpFml3cJ/exec';
-    var AUDIO_URL    = 'https://drive.google.com/uc?export=view&id=1CQqcxadNivKqeopHTt5zkzv0M7Qe-FF7'; // ← Google Drive MP3
-    var COUPLE_NAME  = 'Noy & Tik';  // เช่น 'Name & Name'  (ถ้าปล่อยว่างจะใช้ — ♡ —)
-    var WEDDING_DATE = 'วันเสาร์ที่ 25 เมษายน 2569';  // เช่น 'วันเสาร์ที่ 1 มีนาคม 2568'
+    var AUDIO_URL    = 'https://drive.google.com/uc?export=view&id=1CQqcxadNivKqeopHTt5zkzv0M7Qe-FF7';
+    var COUPLE_NAME  = 'Noy & Tik';
+    var WEDDING_DATE = 'วันเสาร์ที่ 25 เมษายน 2569';
 
     /* ============================================================
        INIT
@@ -215,14 +146,11 @@
     if (COUPLE_NAME)  document.getElementById('splash-names').textContent = COUPLE_NAME;
     if (WEDDING_DATE) document.getElementById('splash-date').innerHTML = WEDDING_DATE + '<br>แตะเพื่อเปิดการ์ดพร้อมเสียงเพลง 🎵';
 
-    var bgAudio      = null;
-    var musicPlaying = false;
-    var opened       = false;
+    var bgAudio = null;
+    var opened  = false;
 
     /* ============================================================
-       OPEN INVITATION — เรียกตอนกด splash
-       ✅ user gesture อยู่บน GitHub Pages domain เดียวกับ Audio
-       ✅ เล่นเสียงได้ทันทีบนมือถือ
+       OPEN INVITATION
     ============================================================ */
     function openInvitation() {
         if (opened) return;
@@ -230,27 +158,14 @@
 
         var splash = document.getElementById('splash');
         var frame  = document.getElementById('main-frame');
-        var btn    = document.getElementById('music-btn');
-        var hint   = document.getElementById('music-hint');
 
-        // 1. เล่นเสียงทันทีจาก gesture นี้ (same origin = GitHub Pages ✅)
+        // เล่นเสียงอัตโนมัติจาก user gesture (ไม่มีปุ่ม toggle)
         bgAudio = new Audio(AUDIO_URL);
         bgAudio.loop   = true;
         bgAudio.volume = 0.65;
-        bgAudio.play().then(function() {
-            musicPlaying = true;
-            updateBtn(true);
-        }).catch(function() {
-            // ถ้า autoplay ยังไม่ผ่าน (หายาก) แสดง hint บอกให้กดปุ่ม
-            updateBtn(false);
-            hint.style.display = 'block';
-            setTimeout(function() { hint.style.display = 'none'; }, 8000);
-        });
+        bgAudio.play().catch(function() { /* autoplay blocked — ไม่ต้องทำอะไร */ });
 
-        // 2. แสดงปุ่ม toggle เพลง
-        btn.style.display = 'flex';
-
-        // 3. โหลด GAS iframe
+        // โหลด GAS iframe
         frame.src = GAS_URL;
         frame.onload = function() {
             frame.classList.add('show');
@@ -266,34 +181,6 @@
                 setTimeout(function() { splash.style.display = 'none'; }, 850);
             }
         }, 5000);
-    }
-
-    /* ============================================================
-       TOGGLE MUSIC
-    ============================================================ */
-    function toggleMusic() {
-        if (!bgAudio) return;
-        if (musicPlaying) {
-            bgAudio.pause();
-            musicPlaying = false;
-            updateBtn(false);
-        } else {
-            bgAudio.play();
-            musicPlaying = true;
-            updateBtn(true);
-        }
-    }
-
-    function updateBtn(isPlaying) {
-        var btn  = document.getElementById('music-btn');
-        var icon = document.getElementById('music-icon');
-        if (isPlaying) {
-            btn.classList.add('playing');
-            icon.textContent = '🎵';
-        } else {
-            btn.classList.remove('playing');
-            icon.textContent = '🔇';
-        }
     }
 
     /* ============================================================
