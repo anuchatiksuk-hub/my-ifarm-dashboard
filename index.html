@@ -8,341 +8,302 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300;1,400&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body, html { height: 100%; overflow: hidden; background: #1a2e22; font-family: 'Cormorant Garamond', serif; }
 
-        body, html {
-            height: 100%;
-            overflow: hidden;
-            background: #1a2e22;
-            font-family: 'Cormorant Garamond', serif;
-        }
-
-        /* ===== SPLASH SCREEN ===== */
+        /* ===== SPLASH ===== */
         #splash {
-            position: fixed;
-            inset: 0;
-            z-index: 9999;
+            position: fixed; inset: 0; z-index: 9999;
             background: linear-gradient(160deg, #1a2e22 0%, #2d4a35 50%, #1a2e22 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            -webkit-tap-highlight-color: transparent;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            cursor: pointer; -webkit-tap-highlight-color: transparent;
         }
-
-        /* Animated orbs */
         #splash::before {
-            content: '';
-            position: absolute;
-            inset: 0;
+            content: ''; position: absolute; inset: 0;
             background:
                 radial-gradient(ellipse 60% 50% at 20% 25%, rgba(168,197,160,0.15) 0%, transparent 70%),
                 radial-gradient(ellipse 50% 40% at 80% 70%, rgba(184,217,176,0.10) 0%, transparent 70%);
             animation: orbShift 7s ease-in-out infinite alternate;
         }
-
-        @keyframes orbShift {
-            0%   { opacity: 0.6; transform: scale(1); }
-            100% { opacity: 1;   transform: scale(1.1); }
-        }
-
-        /* Subtle grid lines */
+        @keyframes orbShift { 0% { opacity:0.6; transform:scale(1); } 100% { opacity:1; transform:scale(1.1); } }
         #splash::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: repeating-linear-gradient(
-                45deg,
-                rgba(168,197,160,0.03) 0px, rgba(168,197,160,0.03) 1px,
-                transparent 1px, transparent 28px
-            );
-            pointer-events: none;
+            content: ''; position: absolute; inset: 0; pointer-events: none;
+            background-image: repeating-linear-gradient(45deg, rgba(168,197,160,0.03) 0px, rgba(168,197,160,0.03) 1px, transparent 1px, transparent 28px);
         }
 
-        /* Corner ornaments */
-        .corner {
-            position: absolute;
-            width: 60px; height: 60px;
-            opacity: 0.4;
-        }
-        .corner.tl { top: 20px; left: 20px; border-top: 1.5px solid #a8c5a0; border-left: 1.5px solid #a8c5a0; }
-        .corner.tr { top: 20px; right: 20px; border-top: 1.5px solid #a8c5a0; border-right: 1.5px solid #a8c5a0; }
-        .corner.bl { bottom: 20px; left: 20px; border-bottom: 1.5px solid #a8c5a0; border-left: 1.5px solid #a8c5a0; }
-        .corner.br { bottom: 20px; right: 20px; border-bottom: 1.5px solid #a8c5a0; border-right: 1.5px solid #a8c5a0; }
+        .corner { position: absolute; width: 60px; height: 60px; opacity: 0.4; }
+        .corner.tl { top:20px; left:20px;   border-top:1.5px solid #a8c5a0; border-left:1.5px solid #a8c5a0; }
+        .corner.tr { top:20px; right:20px;  border-top:1.5px solid #a8c5a0; border-right:1.5px solid #a8c5a0; }
+        .corner.bl { bottom:20px; left:20px;  border-bottom:1.5px solid #a8c5a0; border-left:1.5px solid #a8c5a0; }
+        .corner.br { bottom:20px; right:20px; border-bottom:1.5px solid #a8c5a0; border-right:1.5px solid #a8c5a0; }
 
-        /* Floating leaves */
-        .leaf {
-            position: absolute;
-            border-radius: 60% 5% 60% 5%;
-            animation: leafFloat linear infinite;
-            pointer-events: none;
-        }
+        .leaf { position:absolute; border-radius:60% 5% 60% 5%; animation:leafFloat linear infinite; pointer-events:none; }
         @keyframes leafFloat {
-            from { transform: translateY(-20px) rotate(0deg); opacity: 0; }
-            8%   { opacity: 0.2; }
-            88%  { opacity: 0.2; }
-            to   { transform: translateY(105vh) rotate(360deg); opacity: 0; }
+            from { transform:translateY(-20px) rotate(0deg); opacity:0; }
+            8% { opacity:0.2; } 88% { opacity:0.2; }
+            to { transform:translateY(105vh) rotate(360deg); opacity:0; }
         }
+        .sparkle { position:absolute; border-radius:50%; background:#c8e6c0; animation:sparklePulse 3s ease-in-out infinite; }
+        @keyframes sparklePulse { 0%,100%{opacity:0;transform:scale(0.5);} 50%{opacity:0.7;transform:scale(1.4);} }
 
-        /* Sparkles */
-        .sparkle {
-            position: absolute;
-            border-radius: 50%;
-            background: #c8e6c0;
-            animation: sparklePulse 3s ease-in-out infinite;
-        }
-        @keyframes sparklePulse {
-            0%, 100% { opacity: 0; transform: scale(0.5); }
-            50%       { opacity: 0.7; transform: scale(1.4); }
-        }
-
-        /* Content */
         .splash-content {
-            position: relative;
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0;
-            animation: contentFloat 5s ease-in-out infinite;
+            position:relative; z-index:2; display:flex; flex-direction:column; align-items:center;
+            animation:contentFloat 5s ease-in-out infinite;
         }
-        @keyframes contentFloat {
-            0%, 100% { transform: translateY(0); }
-            50%       { transform: translateY(-8px); }
-        }
+        @keyframes contentFloat { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-8px);} }
 
-        /* Envelope icon */
-        .envelope-icon {
-            width: 100px; height: 72px;
-            margin-bottom: 28px;
-            filter: drop-shadow(0 12px 30px rgba(40,80,50,0.5));
-        }
+        .envelope-icon { width:100px; height:72px; margin-bottom:28px; filter:drop-shadow(0 12px 30px rgba(40,80,50,0.5)); }
 
-        .splash-eyebrow {
-            font-size: 0.78rem;
-            letter-spacing: 6px;
-            text-transform: uppercase;
-            color: rgba(168,197,160,0.65);
-            font-weight: 300;
-            margin-bottom: 14px;
-        }
+        .splash-eyebrow { font-size:0.78rem; letter-spacing:6px; text-transform:uppercase; color:rgba(168,197,160,0.65); font-weight:300; margin-bottom:14px; }
 
         .splash-names {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(2.4rem, 8vw, 3.2rem);
-            font-style: italic;
-            font-weight: 700;
-            letter-spacing: 2px;
-            line-height: 1.1;
-            margin-bottom: 10px;
-            background: linear-gradient(105deg, #a8c5a0 0%, #e8f5e4 35%, #fff 50%, #e8f5e4 65%, #a8c5a0 100%);
-            background-size: 300% auto;
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: nameShimmer 5s linear infinite;
-            filter: drop-shadow(0 2px 8px rgba(168,197,160,0.5));
+            font-family:'Playfair Display',serif; font-size:clamp(2.4rem,8vw,3.2rem); font-style:italic; font-weight:700;
+            letter-spacing:2px; line-height:1.1; margin-bottom:10px;
+            background:linear-gradient(105deg,#a8c5a0 0%,#e8f5e4 35%,#fff 50%,#e8f5e4 65%,#a8c5a0 100%);
+            background-size:300% auto; background-clip:text; -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+            animation:nameShimmer 5s linear infinite; filter:drop-shadow(0 2px 8px rgba(168,197,160,0.5));
         }
-        @keyframes nameShimmer {
-            0%   { background-position: -100% center; }
-            100% { background-position: 200% center; }
-        }
+        @keyframes nameShimmer { 0%{background-position:-100% center;} 100%{background-position:200% center;} }
 
-        .splash-date {
-            font-size: 0.95rem;
-            color: rgba(168,197,160,0.6);
-            letter-spacing: 3px;
-            font-weight: 300;
-            margin-bottom: 48px;
-        }
+        .splash-date { font-size:0.9rem; color:rgba(168,197,160,0.6); letter-spacing:2px; font-weight:300; margin-bottom:48px; text-align:center; padding:0 24px; }
 
-        /* CTA Button */
-        .splash-btn {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-            animation: btnPulse 3s ease-in-out infinite;
-        }
-        @keyframes btnPulse {
-            0%, 100% { opacity: 0.5; transform: translateY(0); }
-            50%       { opacity: 1;   transform: translateY(-5px); }
-        }
+        .splash-btn { display:flex; flex-direction:column; align-items:center; gap:12px; animation:btnPulse 3s ease-in-out infinite; }
+        @keyframes btnPulse { 0%,100%{opacity:0.5;transform:translateY(0);} 50%{opacity:1;transform:translateY(-5px);} }
 
         .btn-ring {
-            width: 56px; height: 56px;
-            border: 2px solid rgba(168,197,160,0.6);
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            position: relative;
+            width:56px; height:56px; border:2px solid rgba(168,197,160,0.6); border-radius:50%;
+            display:flex; align-items:center; justify-content:center; position:relative;
         }
-        .btn-ring::before {
-            content: '';
-            position: absolute; inset: -8px;
-            border: 1px solid rgba(168,197,160,0.25);
-            border-radius: 50%;
-            animation: ringExpand 3s ease-out infinite;
+        .btn-ring::before { content:''; position:absolute; inset:-8px; border:1px solid rgba(168,197,160,0.25); border-radius:50%; animation:ringExpand 3s ease-out infinite; }
+        .btn-ring::after  { content:''; position:absolute; inset:-18px; border:1px solid rgba(168,197,160,0.1);  border-radius:50%; animation:ringExpand 3s ease-out infinite; animation-delay:0.5s; }
+        @keyframes ringExpand { 0%{transform:scale(1);opacity:0.6;} 100%{transform:scale(1.7);opacity:0;} }
+        .btn-ring svg { width:26px; height:26px; fill:rgba(168,197,160,0.85); }
+        .btn-text { font-size:0.82rem; letter-spacing:4px; text-transform:uppercase; color:rgba(168,197,160,0.55); }
+
+        /* ===== MUSIC HINT (แสดงหลังเปิดซอง บอกให้กดปุ่มเพลง) ===== */
+        #music-hint {
+            display: none;
+            position: fixed;
+            bottom: 90px; right: 14px;
+            z-index: 9998;
+            background: rgba(30,20,12,0.92);
+            color: #f5e8d0;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.85rem;
+            padding: 10px 16px 10px 14px;
+            border-radius: 24px;
+            border: 1px solid rgba(176,141,87,0.35);
+            backdrop-filter: blur(8px);
+            white-space: nowrap;
+            animation: hintBounce 2s ease-in-out 3;
+            pointer-events: none;
         }
-        .btn-ring::after {
-            content: '';
-            position: absolute; inset: -18px;
-            border: 1px solid rgba(168,197,160,0.1);
-            border-radius: 50%;
-            animation: ringExpand 3s ease-out infinite;
-            animation-delay: 0.5s;
+        @keyframes hintBounce {
+            0%,100%{transform:translateY(0);opacity:1;}
+            50%{transform:translateY(-6px);opacity:0.85;}
         }
-        @keyframes ringExpand {
-            0%   { transform: scale(1);   opacity: 0.6; }
-            100% { transform: scale(1.7); opacity: 0; }
+        #music-hint::after {
+            content:'';
+            position:absolute; right:10px; bottom:-8px;
+            border:8px solid transparent;
+            border-top-color:rgba(30,20,12,0.92);
         }
 
-        /* Touch icon SVG */
-        .btn-ring svg {
-            width: 26px; height: 26px;
-            fill: rgba(168,197,160,0.85);
+        /* ===== MUSIC TOGGLE BTN (อยู่บน GitHub Pages ไม่ใช่ GAS) ===== */
+        #music-btn {
+            display: none;
+            position: fixed;
+            bottom: 82px; right: 18px;
+            z-index: 9997;
+            width: 48px; height: 48px;
+            border-radius: 50%; border: none;
+            cursor: pointer;
+            align-items: center; justify-content: center;
+            background: linear-gradient(135deg, #b08d57 0%, #d4af7a 100%);
+            box-shadow: 0 4px 18px rgba(176,141,87,0.5);
+            transition: all 0.3s cubic-bezier(0.34,1.4,0.64,1);
+            -webkit-tap-highlight-color: transparent;
+            outline: none;
+            font-size: 22px;
         }
+        #music-btn:hover  { transform:scale(1.12); box-shadow:0 8px 28px rgba(176,141,87,0.6); }
+        #music-btn:active { transform:scale(0.92); }
+        #music-btn.playing::before {
+            content:''; position:absolute; inset:-6px; border-radius:50%;
+            border:2px solid rgba(176,141,87,0.5); animation:musicRipple 2s ease-out infinite;
+        }
+        #music-btn.playing::after {
+            content:''; position:absolute; inset:-14px; border-radius:50%;
+            border:1.5px solid rgba(176,141,87,0.25); animation:musicRipple 2s ease-out infinite; animation-delay:0.6s;
+        }
+        @keyframes musicRipple { 0%{transform:scale(1);opacity:0.8;} 100%{transform:scale(1.5);opacity:0;} }
+        #music-btn .icon { transition:all 0.3s ease; }
+        #music-btn.playing .icon { animation:noteWiggle 1.8s ease-in-out infinite; }
+        @keyframes noteWiggle { 0%,100%{transform:rotate(-8deg);} 50%{transform:rotate(8deg) scale(1.1);} }
 
-        .btn-text {
-            font-size: 0.82rem;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            color: rgba(168,197,160,0.55);
-        }
-
-        /* ===== FADE OUT SPLASH ===== */
-        #splash.fade-out {
-            animation: splashFade 0.8s cubic-bezier(0.4,0,0.2,1) forwards;
-        }
-        @keyframes splashFade {
-            0%   { opacity: 1; transform: scale(1); }
-            100% { opacity: 0; transform: scale(1.06); pointer-events: none; }
-        }
+        /* ===== SPLASH FADE OUT ===== */
+        #splash.fade-out { animation:splashFade 0.8s cubic-bezier(0.4,0,0.2,1) forwards; }
+        @keyframes splashFade { 0%{opacity:1;transform:scale(1);} 100%{opacity:0;transform:scale(1.06);pointer-events:none;} }
 
         /* ===== MAIN IFRAME ===== */
-        #main-frame {
-            position: fixed;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-            opacity: 0;
-            transition: opacity 0.6s ease;
-        }
-        #main-frame.show { opacity: 1; }
+        #main-frame { position:fixed; inset:0; width:100%; height:100%; border:none; opacity:0; transition:opacity 0.6s ease; }
+        #main-frame.show { opacity:1; }
     </style>
 </head>
 <body>
 
-    <!-- ===== MAIN IFRAME (hidden until splash tapped) ===== -->
-    <iframe id="main-frame"
-        allow="autoplay; encrypted-media; microphone; camera"
-        allowfullscreen>
-    </iframe>
+    <iframe id="main-frame" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
-    <!-- ===== SPLASH SCREEN ===== -->
     <div id="splash">
-        <div class="corner tl"></div>
-        <div class="corner tr"></div>
-        <div class="corner bl"></div>
-        <div class="corner br"></div>
+        <div class="corner tl"></div><div class="corner tr"></div>
+        <div class="corner bl"></div><div class="corner br"></div>
 
-        <!-- Floating leaves -->
         <div class="leaf" style="width:14px;height:8px;left:7%;animation-duration:10s;animation-delay:0s;background:rgba(168,197,160,0.5);"></div>
         <div class="leaf" style="width:10px;height:6px;left:20%;animation-duration:13s;animation-delay:2s;background:rgba(200,230,192,0.4);"></div>
         <div class="leaf" style="width:16px;height:9px;left:60%;animation-duration:9s;animation-delay:0.5s;background:rgba(168,197,160,0.45);"></div>
         <div class="leaf" style="width:8px;height:5px;left:80%;animation-duration:12s;animation-delay:3s;background:rgba(200,230,192,0.4);"></div>
         <div class="leaf" style="width:12px;height:7px;left:45%;animation-duration:11s;animation-delay:4s;background:rgba(168,197,160,0.3);"></div>
 
-        <!-- Sparkles -->
         <div class="sparkle" style="width:4px;height:4px;top:28%;left:14%;animation-delay:0s;"></div>
         <div class="sparkle" style="width:3px;height:3px;top:33%;right:13%;animation-delay:1.2s;"></div>
         <div class="sparkle" style="width:5px;height:5px;top:65%;left:17%;animation-delay:2.1s;"></div>
         <div class="sparkle" style="width:3px;height:3px;top:60%;right:16%;animation-delay:0.8s;"></div>
         <div class="sparkle" style="width:4px;height:4px;top:20%;left:40%;animation-delay:1.7s;"></div>
-        <div class="sparkle" style="width:3px;height:3px;top:78%;left:58%;animation-delay:2.8s;"></div>
 
         <div class="splash-content">
-            <!-- Envelope SVG -->
-            <svg class="envelope-icon" viewBox="0 0 100 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg class="envelope-icon" viewBox="0 0 100 72" fill="none">
                 <rect x="2" y="2" width="96" height="68" rx="4" fill="#eef7ea" opacity="0.9"/>
                 <polygon points="2,2 98,2 50,42" fill="#cde8c5"/>
                 <polygon points="2,2 2,70 42,40" fill="#a8c5a0" opacity="0.3"/>
                 <polygon points="98,2 98,70 58,40" fill="#a8c5a0" opacity="0.3"/>
                 <polygon points="2,70 98,70 50,32" fill="#e4f3df" opacity="0.95"/>
-                <!-- Wax seal -->
                 <circle cx="50" cy="36" r="12" fill="#3d7050" opacity="0.9"/>
                 <circle cx="50" cy="36" r="9" fill="#5a9470" opacity="0.95"/>
                 <text x="50" y="40" text-anchor="middle" font-size="9" fill="rgba(232,245,228,0.9)" font-family="serif">✿</text>
             </svg>
-
             <p class="splash-eyebrow">Wedding Invitation</p>
             <h1 class="splash-names" id="splash-names">— ♡ —</h1>
-            <p class="splash-date" id="splash-date">กดเพื่อเปิดการ์ดและเปิดเพลง</p>
-
+            <p class="splash-date" id="splash-date">แตะเพื่อเปิดการ์ด<br>พร้อมเสียงเพลง 🎵</p>
             <div class="splash-btn">
                 <div class="btn-ring">
-                    <!-- Touch / tap icon -->
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M9 11.24V7.5C9 6.12 10.12 5 11.5 5S14 6.12 14 7.5v3.74c1.21-.81 2-2.18 2-3.74C16 5.01 13.99 3 11.5 3S7 5.01 7 7.5c0 1.56.79 2.93 2 3.74zm9.84 4.63l-4.54-2.26c-.17-.07-.35-.11-.54-.11H13v-6c0-.83-.67-1.5-1.5-1.5S10 6.67 10 7.5v10.74l-3.43-.72c-.08-.01-.15-.03-.24-.03-.31 0-.59.13-.79.33l-.79.8 4.94 4.94c.27.27.65.44 1.06.44h6.79c.75 0 1.33-.55 1.44-1.28l.75-5.27c.01-.07.02-.14.02-.2 0-.62-.38-1.16-.91-1.38z"/>
-                    </svg>
+                    <svg viewBox="0 0 24 24"><path d="M9 11.24V7.5C9 6.12 10.12 5 11.5 5S14 6.12 14 7.5v3.74c1.21-.81 2-2.18 2-3.74C16 5.01 13.99 3 11.5 3S7 5.01 7 7.5c0 1.56.79 2.93 2 3.74zm9.84 4.63l-4.54-2.26c-.17-.07-.35-.11-.54-.11H13v-6c0-.83-.67-1.5-1.5-1.5S10 6.67 10 7.5v10.74l-3.43-.72c-.08-.01-.15-.03-.24-.03-.31 0-.59.13-.79.33l-.79.8 4.94 4.94c.27.27.65.44 1.06.44h6.79c.75 0 1.33-.55 1.44-1.28l.75-5.27c.01-.07.02-.14.02-.2 0-.62-.38-1.16-.91-1.38z"/></svg>
                 </div>
                 <span class="btn-text">แตะเพื่อเปิด</span>
             </div>
         </div>
     </div>
 
+    <!-- Music hint tooltip -->
+    <div id="music-hint">🎵 กดปุ่มนี้เพื่อเปิดเพลง</div>
+
+    <!-- Music toggle button (อยู่บน GitHub Pages — ไม่ถูก iframe block) -->
+    <button id="music-btn" onclick="toggleMusic()">
+        <span class="icon" id="music-icon">🎵</span>
+    </button>
+
     <script>
-        // ===== CONFIG =====
-        // เปลี่ยน URL นี้เป็น Google Apps Script URL ของคุณ
-        var GAS_URL = 'https://script.google.com/macros/s/AKfycbx92GzU1TgolUBrlJLSM46sLVbT0pEHJ0kgT8ztas-HSkAVngfCr8wsbCh0IpFml3cJ/exec';
+    /* ============================================================
+       CONFIG — แก้ตรงนี้
+    ============================================================ */
+    var GAS_URL      = 'https://script.google.com/macros/s/AKfycbx92GzU1TgolUBrlJLSM46sLVbT0pEHJ0kgT8ztas-HSkAVngfCr8wsbCh0IpFml3cJ/exec';
+    var AUDIO_URL    = 'https://drive.google.com/uc?export=view&id=1CQqcxadNivKqeopHTt5zkzv0M7Qe-FF7'; // ← Google Drive MP3
+    var COUPLE_NAME  = '';  // เช่น 'Name & Name'  (ถ้าปล่อยว่างจะใช้ — ♡ —)
+    var WEDDING_DATE = '';  // เช่น 'วันเสาร์ที่ 1 มีนาคม 2568'
 
-        // ชื่อและวันงาน (ถ้าต้องการแสดงบน splash)
-        // หากปล่อยว่างจะแสดง — ♡ — แทน
-        var COUPLE_NAME = 'Noy & Tik';   // เช่น ' & Name'
-        var WEDDING_DATE = 'วันเสาร์ที่ 25 เมษายน 2026';  // เช่น 'วันเสาร์ที่ 14 กุมภาพันธ์ 2026'
+    /* ============================================================
+       INIT
+    ============================================================ */
+    if (COUPLE_NAME)  document.getElementById('splash-names').textContent = COUPLE_NAME;
+    if (WEDDING_DATE) document.getElementById('splash-date').innerHTML = WEDDING_DATE + '<br>แตะเพื่อเปิดการ์ดพร้อมเสียงเพลง 🎵';
 
-        // ===== INIT =====
-        if (COUPLE_NAME)   document.getElementById('splash-names').textContent = COUPLE_NAME;
-        if (WEDDING_DATE)  document.getElementById('splash-date').textContent  = WEDDING_DATE;
+    var bgAudio      = null;
+    var musicPlaying = false;
+    var opened       = false;
 
-        // ===== OPEN HANDLER =====
-        var opened = false;
+    /* ============================================================
+       OPEN INVITATION — เรียกตอนกด splash
+       ✅ user gesture อยู่บน GitHub Pages domain เดียวกับ Audio
+       ✅ เล่นเสียงได้ทันทีบนมือถือ
+    ============================================================ */
+    function openInvitation() {
+        if (opened) return;
+        opened = true;
 
-        function openInvitation() {
-            if (opened) return;
-            opened = true;
+        var splash = document.getElementById('splash');
+        var frame  = document.getElementById('main-frame');
+        var btn    = document.getElementById('music-btn');
+        var hint   = document.getElementById('music-hint');
 
-            var splash = document.getElementById('splash');
-            var frame  = document.getElementById('main-frame');
+        // 1. เล่นเสียงทันทีจาก gesture นี้ (same origin = GitHub Pages ✅)
+        bgAudio = new Audio(AUDIO_URL);
+        bgAudio.loop   = true;
+        bgAudio.volume = 0.65;
+        bgAudio.play().then(function() {
+            musicPlaying = true;
+            updateBtn(true);
+        }).catch(function() {
+            // ถ้า autoplay ยังไม่ผ่าน (หายาก) แสดง hint บอกให้กดปุ่ม
+            updateBtn(false);
+            hint.style.display = 'block';
+            setTimeout(function() { hint.style.display = 'none'; }, 8000);
+        });
 
-            // 1. โหลด iframe ตอนกด → browser ถือเป็น user gesture → autoplay เสียงผ่าน ✅
-            frame.src = GAS_URL;
+        // 2. แสดงปุ่ม toggle เพลง
+        btn.style.display = 'flex';
 
-            // 2. รอให้ iframe โหลดแล้วค่อย fade in
-            frame.onload = function() {
+        // 3. โหลด GAS iframe
+        frame.src = GAS_URL;
+        frame.onload = function() {
+            frame.classList.add('show');
+            splash.classList.add('fade-out');
+            setTimeout(function() { splash.style.display = 'none'; }, 850);
+        };
+
+        // Fallback
+        setTimeout(function() {
+            if (!frame.classList.contains('show')) {
                 frame.classList.add('show');
-                // 3. fade out splash
                 splash.classList.add('fade-out');
-                setTimeout(function() {
-                    splash.style.display = 'none';
-                }, 850);
-            };
+                setTimeout(function() { splash.style.display = 'none'; }, 850);
+            }
+        }, 5000);
+    }
 
-            // Fallback: ถ้า onload ไม่ยิง (บาง browser) ก็ fade ได้เลย
-            setTimeout(function() {
-                if (!frame.classList.contains('show')) {
-                    frame.classList.add('show');
-                    splash.classList.add('fade-out');
-                    setTimeout(function() { splash.style.display = 'none'; }, 850);
-                }
-            }, 4000);
+    /* ============================================================
+       TOGGLE MUSIC
+    ============================================================ */
+    function toggleMusic() {
+        if (!bgAudio) return;
+        if (musicPlaying) {
+            bgAudio.pause();
+            musicPlaying = false;
+            updateBtn(false);
+        } else {
+            bgAudio.play();
+            musicPlaying = true;
+            updateBtn(true);
         }
+    }
 
-        document.getElementById('splash').addEventListener('click', openInvitation);
-        document.getElementById('splash').addEventListener('touchend', function(e) {
-            e.preventDefault();
-            openInvitation();
-        }, { passive: false });
+    function updateBtn(isPlaying) {
+        var btn  = document.getElementById('music-btn');
+        var icon = document.getElementById('music-icon');
+        if (isPlaying) {
+            btn.classList.add('playing');
+            icon.textContent = '🎵';
+        } else {
+            btn.classList.remove('playing');
+            icon.textContent = '🔇';
+        }
+    }
+
+    /* ============================================================
+       EVENTS
+    ============================================================ */
+    document.getElementById('splash').addEventListener('click', openInvitation);
+    document.getElementById('splash').addEventListener('touchend', function(e) {
+        e.preventDefault();
+        openInvitation();
+    }, { passive: false });
     </script>
 </body>
 </html>
